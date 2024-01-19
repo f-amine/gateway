@@ -1,0 +1,17 @@
+services:
+  gateway:
+    container_name: gateway
+    build: ./
+    ports:
+      - "8222:8222"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery:8761/eureka/
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://discovery:8761/actuator/health"]
+      interval: 10s
+      retries: 3
+    networks:
+      - config-server_net-bridge
+networks:
+  config-server_net-bridge:
+    external: true
